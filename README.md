@@ -36,5 +36,5 @@ The dataset intentionally includes data mismatches to simulate real-world operat
 ***
 
 ## Tools Used
-* **SQLite** 
-* **DbVisualizer** 
+* **SQLite:** For database creation and query execution.
+* **DbVisualizer:** For writing scripts and auditing spreadsheet outputs.

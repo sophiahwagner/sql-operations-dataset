@@ -1,6 +1,6 @@
 # Clinic Operations Tracker
 
-This project focuses on handling imperfect data relationships using advanced SQL joins. Using a simulated clinic dataset (tracking doctors and incoming patient appointments), the queries isolate scheduling gaps, calculate staff workloads, and flag unassigned records.
+This project focuses on handling imperfect data relationships using advanced SQL joins and unions. Using a simulated clinic dataset (tracking doctors and incoming patient appointments), the queries isolate scheduling gaps, calculate staff workloads, and flag unassigned records.
 
 ## Database Structure
 
@@ -15,23 +15,25 @@ The dataset intentionally includes data mismatches to simulate real-world operat
 
 ## Key Skills & Query Examples
 
-### 1. Handling Unmatched Data (`LEFT JOIN`)
+### 1. Linking Tables Together (`LEFT JOIN`)
 * Swapped table positions to control which dataset acts as the primary "anchor."
 * Learned how to preserve unmatched rows from the primary table while filling missing values from the secondary table with `NULL`.
 
-### 2. Finding Gaps (Anti-Joins)
+### 2. Finding Missing Information (Anti-Joins)
 * Combined a `LEFT JOIN` with a `WHERE ... IS NULL` filter to isolate operational errors, such as specific patients who are without an assigned doctor.
 
-### 3. Workload Aggregation (`GROUP BY` with Column Counts)
-* Grouped scheduling data to calculate appointment volume per doctor and specialty.
-* Used specific column counting (e.g., `COUNT(appointment_id)`) instead of `COUNT(*)` to ensure underutilized staff accurately report a workload of `0` instead of `1`.
+### 3. Counting Workloads (`GROUP BY` & `HAVING`)
+* Counts the exact number of appointments each doctor and specialty has today.
+* Uses column-specific counts (like `COUNT(appointment_id)`) so that doctors with an empty schedule show up as `0` instead of accidentally counting as `1`.
+* Uses `HAVING` and `ORDER BY` to filter out and rank the busiest or slowest departments.
 
-### 4. Ranking and Filtering Summaries (`HAVING` & `ORDER BY`)
-* Used `HAVING` to filter calculated aggregates, pinpointing specific medical departments with low utilization.
-* Applied `ORDER BY` to rank clinical specialties by their total patient traffic from highest to lowest.
+### 4. Vertical Data Stacking (`UNION` & `UNION ALL`)
+* Combined separate queries into a single output by stacking rows vertically.
+* Used `UNION ALL` to merge lists quickly while preserving duplicate rows, and regular `UNION` to automatically filter out identical duplicates.
+* Applied structural alignment rules, ensuring that column counts and data types matched perfectly across different tables.
 
-### 5. Automated Data Labeling (`CASE WHEN`)
-* Built a triage system using conditional `if/else` logic to automatically flag rows as either `'Confirmed'` or `'Needs Action'` based on whether a doctor is assigned.
+### 5. Custom Status Lables (`CASE WHEN`)
+* Used conditional `if/else` logic to automatically flag rows as either `'Confirmed'` or `'Needs Action'` based on whether a doctor is assigned.
 
 ***
 
